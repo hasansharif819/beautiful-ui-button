@@ -6,7 +6,7 @@ A customizable button component with beautiful UI.
 ```bash
 npm install beautiful-ui-button
 
-## Use
+## Use or Setup
 
 import React from 'react';
 import Button from 'beautiful-ui-button';
