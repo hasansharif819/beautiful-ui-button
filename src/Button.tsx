@@ -1,15 +1,35 @@
 import React from 'react';
 import './Button.css';
 
-interface ButtonProps {
+// Define base props
+interface BaseButtonProps {
   text: string;
-  link: string;
-  bgColor: string;
-  textColor: string;
+  bgColor?: string;
+  textColor?: string;
   variant?: 'sm' | 'md' | 'lg';
 }
 
-const Button: React.FC<ButtonProps> = ({ text, link, bgColor, textColor, variant = 'md' }) => {
+// Define props for a button (without a link)
+interface ButtonProps extends BaseButtonProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
+  link?: never; // Ensure link is not provided
+}
+
+// Define props for an anchor (with a link)
+interface AnchorButtonProps extends BaseButtonProps, React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  link: string; // Ensure link is provided
+}
+
+// Combine the two types
+type Props = ButtonProps | AnchorButtonProps;
+
+const Button: React.FC<Props> = ({
+  text,
+  link,
+  bgColor = '#007BFF', // Default background color
+  textColor = '#FFFFFF', // Default text color
+  variant = 'md', // Default variant
+  ...rest // Spread remaining props
+}) => {
   const buttonStyles = {
     backgroundColor: bgColor,
     color: textColor,
@@ -20,10 +40,29 @@ const Button: React.FC<ButtonProps> = ({ text, link, bgColor, textColor, variant
     fontSize: variant === 'sm' ? '14px' : variant === 'md' ? '16px' : '18px',
   };
 
+  // If a link is provided, render an anchor tag
+  if (link) {
+    return (
+      <a
+        href={link}
+        style={buttonStyles}
+        className="beautiful-button"
+        {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)} // Cast to anchor props
+      >
+        {text}
+      </a>
+    );
+  }
+
+  // Otherwise, render a button
   return (
-    <a href={link} style={buttonStyles} className="beautiful-button">
+    <button
+      style={buttonStyles}
+      className="beautiful-button"
+      {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)} // Cast to button props
+    >
       {text}
-    </a>
+    </button>
   );
 };
 
