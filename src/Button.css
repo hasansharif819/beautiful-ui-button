@@ -1,0 +1,9 @@
+.beautiful-button {
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .beautiful-button:hover {
+    opacity: 0.9;
+  }
